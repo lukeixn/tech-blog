@@ -1,0 +1,18 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Tag from '../components/Tag.astro';
+import MermaidRenderer from '../components/MermaidRenderer.astro';
+import { formatDate, withBase } from '../lib/site';
+import type { MarkdownHeading } from 'astro';
+interface Props { title: string; description: string; date: Date; category?: string; tags: string[]; readingTime?: number; headings: MarkdownHeading[]; previous?: { title: string; href: string }; next?: { title: string; href: string }; cover?: string }
+const { title, description, date, category, tags, readingTime, headings, previous, next, cover } = Astro.props;
+const toc = headings.filter(h => h.depth === 2 || h.depth === 3);
+---
+<BaseLayout title={title} description={description} image={cover}>
+  <div class="container article-shell">
+    <a class="back-link" href={withBase('/blog/')}>← All technical notes</a>
+    <header class="article-header"><div class="note-meta">{category && <>{category} · </>}<time datetime={date.toISOString()}>{formatDate(date)}</time>{readingTime && <> · {readingTime} min read</>}</div><h1>{title}</h1><p>{description}</p><div class="tags">{tags.map(tag => <Tag label={tag} />)}</div></header>
+    <div class="article-grid"><article class="prose"><slot /></article>{toc.length > 0 && <aside class="toc" aria-label="Table of contents"><span class="eyebrow">On this page</span><ol>{toc.map(h => <li class:list={[h.depth === 3 && 'toc-sub']}><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></aside>}</div><MermaidRenderer />
+    {(previous || next) && <nav class="article-pagination" aria-label="Article navigation">{previous ? <a href={previous.href}><span>← Previous</span><strong>{previous.title}</strong></a> : <span />}{next ? <a href={next.href}><span>Next →</span><strong>{next.title}</strong></a> : <span />}</nav>}
+  </div>
+</BaseLayout>

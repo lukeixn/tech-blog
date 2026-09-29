@@ -1,0 +1,15 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Tag from '../components/Tag.astro';
+import MermaidRenderer from '../components/MermaidRenderer.astro';
+import { withBase, formatDate } from '../lib/site';
+interface Props { title: string; description: string; kind: 'projects' | 'research'; status: string; date: Date; tags: string[]; stack?: string[]; github?: string; paper?: string; demo?: string; cover?: string }
+const { title, description, kind, status, date, tags, stack, github, paper, demo, cover } = Astro.props;
+---
+<BaseLayout title={title} description={description} image={cover}>
+  <div class="container article-shell">
+    <a class="back-link" href={withBase(`/${kind}/`)}>← All {kind}</a>
+    <header class="article-header"><div class="note-meta">{kind === 'research' ? 'Research' : 'Project'} · {status} · {formatDate(date)}</div><h1>{title}</h1><p>{description}</p><div class="tags">{tags.map(tag => <Tag label={tag} />)}{stack?.map(item => <Tag label={item} />)}</div><div class="resource-links">{github && <a href={github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}{paper && <a href={paper} target="_blank" rel="noopener noreferrer">Paper ↗</a>}{demo && <a href={demo} target="_blank" rel="noopener noreferrer">Demo ↗</a>}</div></header>
+    <article class="prose prose-wide"><slot /></article><MermaidRenderer />
+  </div>
+</BaseLayout>

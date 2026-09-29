@@ -1,0 +1,12 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { byDate, entryUrl } from '../../lib/site';
+export async function getStaticPaths() {
+  const entries = (await getCollection('blog', ({ data }) => !data.draft)).sort(byDate);
+  return entries.map((entry, index) => ({ params: { slug: entry.id }, props: { entry, previous: entries[index + 1], next: entries[index - 1] } }));
+}
+const { entry, previous, next } = Astro.props as { entry: CollectionEntry<'blog'>; previous?: CollectionEntry<'blog'>; next?: CollectionEntry<'blog'> };
+const { Content, headings } = await render(entry);
+---
+<ArticleLayout {...entry.data} headings={headings} previous={previous && { title: previous.data.title, href: entryUrl('blog', previous.id) }} next={next && { title: next.data.title, href: entryUrl('blog', next.id) }}><Content /></ArticleLayout>

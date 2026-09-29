@@ -1,0 +1,18 @@
+---
+import { profile, withBase } from '../lib/site';
+const navigation = [
+  { label: 'Research', path: '/research/' },
+  { label: 'Projects', path: '/projects/' },
+  { label: 'Blog', path: '/blog/' },
+  { label: 'Resume', path: '/resume/' },
+  { label: 'About', path: '/about/' },
+];
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={withBase('/')} aria-label="Home"><span class="brand-mark">{profile.initials}</span><span>{profile.name}</span></a>
+    <nav aria-label="Main navigation">
+      {navigation.map(({ label, path }) => <a href={withBase(path)} aria-current={Astro.url.pathname === withBase(path) ? 'page' : undefined}>{label}</a>)}
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,8 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ResearchCard from '../../components/ResearchCard.astro';
+import { byDate } from '../../lib/site';
+const entries = (await getCollection('research', ({ data }) => !data.draft)).sort(byDate);
+---
+<BaseLayout title="Research" description="Research directions and experiments in vision and VLM."><section class="container listing"><p class="eyebrow accent">QUESTIONS / EXPERIMENTS</p><h1>Research</h1><p class="listing-lead">Current directions, hypotheses and experimental plans. Results are added only when verified.</p><div class="card-grid">{entries.map(entry => <ResearchCard entry={entry} />)}</div></section></BaseLayout>

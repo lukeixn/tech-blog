@@ -1,0 +1,8 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { byDate } from '../../lib/site';
+const entries = (await getCollection('projects', ({ data }) => !data.draft)).sort(byDate);
+---
+<BaseLayout title="Projects" description="Engineering projects in AI, VLM, agents and robotics."><section class="container listing"><p class="eyebrow accent">ENGINEERING / SYSTEMS</p><h1>Projects</h1><p class="listing-lead">From research prototypes to systems that can be inspected, reproduced and extended.</p><div class="card-grid">{entries.map(entry => <ProjectCard entry={entry} />)}</div></section></BaseLayout>

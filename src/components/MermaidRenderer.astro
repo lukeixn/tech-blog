@@ -1,0 +1,9 @@
+<script>
+  const diagrams = document.querySelectorAll<HTMLElement>('.mermaid');
+  if (diagrams.length) {
+    import('mermaid').then(({ default: mermaid }) => {
+      mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'strict' });
+      return mermaid.run({ nodes: diagrams });
+    }).catch(error => console.error('Mermaid diagram could not render', error));
+  }
+</script>

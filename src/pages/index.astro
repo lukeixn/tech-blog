@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResearchCard from '../components/ResearchCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { profile, withBase, byDate } from '../lib/site';
+const [research, projects, blog] = await Promise.all(['research','projects','blog'].map(name => getCollection(name as 'research' | 'projects' | 'blog', ({data}) => !data.draft)));
+const featuredResearch = research.filter(entry => entry.data.featured).sort(byDate).slice(0, 3);
+const featuredProjects = projects.filter(entry => entry.data.featured).sort(byDate).slice(0, 3);
+const recentNotes = blog.sort(byDate).slice(0, 3);
+---
+<BaseLayout>
+  <section class="hero container">
+    <p class="eyebrow accent">{profile.role}</p>
+    <h1>{profile.name}<span class="hero-dot">.</span></h1>
+    <p class="hero-topics">AI / VLM / Vision Transformer / AI Agent</p>
+    <p class="hero-lead">{profile.tagline}<br />{profile.focus}</p>
+    <div class="hero-actions"><a class="button primary" href={withBase('/research/')}>Research <span>↗</span></a><a class="button" href={withBase('/projects/')}>Projects <span>↗</span></a><a class="text-action" href={withBase('/blog/')}>Blog ↗</a>{profile.github && <a class="text-action" href={profile.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}<a class="text-action" href={withBase('/resume/')}>Resume ↗</a></div>
+    <div class="hero-rule"><span>VISION · LANGUAGE · SYSTEMS</span><span>SCROLL TO EXPLORE ↓</span></div>
+  </section>
+  <section class="section container" id="featured-research"><div class="section-heading"><div><p class="eyebrow">01 / RESEARCH</p><h2>Featured research</h2><p>Questions I am exploring and the experiments behind them.</p></div><a href={withBase('/research/')}>View all research ↗</a></div><div class="card-grid">{featuredResearch.map(entry => <ResearchCard entry={entry} />)}</div></section>
+  <section class="section container" id="featured-projects"><div class="section-heading"><div><p class="eyebrow">02 / BUILT WORK</p><h2>Featured projects</h2><p>Engineering work, prototypes and reproducible systems.</p></div><a href={withBase('/projects/')}>View all projects ↗</a></div><div class="card-grid">{featuredProjects.map(entry => <ProjectCard entry={entry} />)}</div></section>
+  <section class="section container" id="latest-notes"><div class="section-heading"><div><p class="eyebrow">03 / WRITING</p><h2>Latest technical notes</h2><p>Working through ideas in vision, transformers and agents.</p></div><a href={withBase('/blog/')}>Read the blog ↗</a></div><div class="note-list">{recentNotes.map(entry => <BlogCard entry={entry} />)}</div></section>
+  <section class="contact-band"><div class="container contact-inner"><div><p class="eyebrow">04 / CONNECT</p><h2>Interested in the work?</h2><p>Explore the code, read the research notes, or get in touch.</p></div><div class="contact-actions">{profile.github && <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}<a href={withBase('/resume/')}>Resume ↗</a>{profile.email ? <a href={`mailto:${profile.email}`}>Contact ↗</a> : <a href={withBase('/about/')}>About / Contact ↗</a>}</div></div></section>
+</BaseLayout>

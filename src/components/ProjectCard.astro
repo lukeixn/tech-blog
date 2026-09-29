@@ -1,0 +1,13 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Tag from './Tag.astro';
+import { entryUrl } from '../lib/site';
+const { entry } = Astro.props as { entry: CollectionEntry<'projects'> };
+---
+<article class="card">
+  <div class="card-top"><span class="eyebrow">Project</span><span class="status">{entry.data.status}</span></div>
+  <h3><a class="card-link" href={entryUrl('projects', entry.id)}>{entry.data.title}<span aria-hidden="true"> ↗</span></a></h3>
+  <p>{entry.data.description}</p>
+  <div class="tags">{entry.data.stack.slice(0, 3).map(tag => <Tag label={tag} />)}</div>
+  {entry.data.github && <a class="small-link" href={entry.data.github} target="_blank" rel="noopener noreferrer">Source code ↗</a>}
+</article>

@@ -1,0 +1,5 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { profile, withBase } from '../lib/site';
+---
+<BaseLayout title="Resume" description="Resume overview: research interests, engineering focus and experience."><section class="container listing resume"><p class="eyebrow accent">PROFILE / EXPERIENCE</p><h1>Resume</h1><p class="listing-lead">{profile.tagline}. {profile.focus}</p><div class="resume-grid"><div><h2>Research interests</h2><ul><li>Vision-language models and long-video retrieval</li><li>Small object recognition with CNN and ViT</li><li>AI agent systems and evaluation</li></ul></div><div><h2>Experience & education</h2><p>Add verified dates, roles, institution details and measurable outcomes here before publishing.</p><h2>Skills</h2><p>Add only tools you have used in projects or experiments.</p></div></div><p class="resume-cta">A PDF is not attached yet. Add <code>public/resume/resume.pdf</code> and replace this message with a download link to <code>{withBase('/resume/resume.pdf')}</code>.</p></section></BaseLayout>

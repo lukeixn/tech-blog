@@ -1,0 +1,10 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { entryUrl, formatDate } from '../lib/site';
+const { entry } = Astro.props as { entry: CollectionEntry<'blog'> };
+---
+<article class="note-card">
+  <div class="note-meta">{entry.data.category} <span>·</span> <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>{entry.data.readingTime && <><span>·</span> {entry.data.readingTime} min read</>}</div>
+  <h3><a href={entryUrl('blog', entry.id)}>{entry.data.title} <span aria-hidden="true">↗</span></a></h3>
+  <p>{entry.data.description}</p>
+</article>
