@@ -3,7 +3,7 @@ import { profile, withBase } from '../lib/site';
 ---
 <footer class="site-footer">
   <div class="container footer-inner">
-    <span>© {new Date().getFullYear()} {profile.name} · Built with Astro</span>
-    <div class="footer-links"><a href={withBase('/about/')}>About</a><a href={withBase('/resume/')}>Resume</a>{profile.github && <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}{profile.email && <a href={`mailto:${profile.email}`}>Email</a>}</div>
+    <span>© {new Date().getFullYear()} {profile.name} · 基于 Astro 构建</span>
+    <div class="footer-links"><a href={withBase('/about/')}>关于</a><a href={withBase('/resume/')}>简历</a>{profile.github && <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}{profile.email && <a href={`mailto:${profile.email}`}>邮箱</a>}</div>
   </div>
 </footer>

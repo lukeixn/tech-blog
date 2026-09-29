@@ -1,9 +1,9 @@
 export const profile = {
   name: 'Your Name', // Replace with your preferred public name.
   initials: 'YN',
-  role: 'AI Engineer · Research Portfolio',
-  tagline: 'Master’s Student in Instrument Science and Technology',
-  focus: 'Focused on Vision-Language Models, Small Object Recognition and AI Agents.',
+  role: 'AI 工程师 · 研究主页',
+  tagline: '仪器科学与技术硕士研究生',
+  focus: '专注于视觉语言模型、小目标识别与 AI Agent。',
   github: 'https://github.com/lukeixn', // Verify the public profile before publishing.
   email: '', // Public contact address; empty hides the mail link.
 };

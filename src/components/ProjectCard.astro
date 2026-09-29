@@ -9,5 +9,5 @@ const { entry } = Astro.props as { entry: CollectionEntry<'projects'> };
   <h3><a class="card-link" href={entryUrl('projects', entry.id)}>{entry.data.title}<span aria-hidden="true"> ↗</span></a></h3>
   <p>{entry.data.description}</p>
   <div class="tags">{entry.data.stack.slice(0, 3).map(tag => <Tag label={tag} />)}</div>
-  {entry.data.github && <a class="small-link" href={entry.data.github} target="_blank" rel="noopener noreferrer">Source code ↗</a>}
+  {entry.data.github && <a class="small-link" href={entry.data.github} target="_blank" rel="noopener noreferrer">源代码 ↗</a>}
 </article>
