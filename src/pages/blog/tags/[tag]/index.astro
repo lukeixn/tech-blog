@@ -1,0 +1,14 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import BlogCard from '../../../../components/BlogCard.astro';
+import { byDate } from '../../../../lib/site';
+import { taxonomySlug, taxonomyUrl } from '../../../../lib/taxonomy';
+export async function getStaticPaths() {
+  const entries = await getCollection('blog', ({ data }) => !data.draft);
+  const tags = [...new Set(entries.flatMap(entry => entry.data.tags))];
+  return tags.map(tag => ({ params: { tag: taxonomySlug(tag) }, props: { tag, entries: entries.filter(entry => entry.data.tags.includes(tag)).sort(byDate) } }));
+}
+const { tag, entries } = Astro.props as { tag: string; entries: CollectionEntry<'blog'>[] };
+---
+<BaseLayout title={`标签：${tag}`} description={`浏览带有 ${tag} 标签的技术文章。`}><section class="container listing"><a class="back-link" href={taxonomyUrl('categories')}>← 返回分类</a><p class="eyebrow accent">博客 / 标签</p><h1>{tag}</h1><p class="listing-lead">{entries.length} 篇文章</p><div class="note-list">{entries.map(entry => <BlogCard entry={entry} />)}</div></section></BaseLayout>

@@ -1,0 +1,13 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { taxonomyUrl, uniqueValues } from '../lib/taxonomy';
+const { entries } = Astro.props as { entries: CollectionEntry<'blog'>[] };
+const categories = uniqueValues(entries, entry => entry.data.category);
+const series = uniqueValues(entries, entry => entry.data.series);
+const tags = [...new Set(entries.flatMap(entry => entry.data.tags))].sort((a, b) => a.localeCompare(b));
+---
+<nav class="taxonomy-panel" aria-label="文章分类">
+  <div><span class="eyebrow">分类</span><div class="taxonomy-links">{categories.map(value => <a href={taxonomyUrl('category', value)}>{value}</a>)}</div></div>
+  {series.length > 0 && <div><span class="eyebrow">系列</span><div class="taxonomy-links">{series.map(value => <a href={taxonomyUrl('series', value)}>{value}</a>)}</div></div>}
+  {tags.length > 0 && <div><span class="eyebrow">标签</span><div class="taxonomy-links">{tags.map(value => <a href={taxonomyUrl('tags', value)}>{value}</a>)}</div></div>}
+</nav>

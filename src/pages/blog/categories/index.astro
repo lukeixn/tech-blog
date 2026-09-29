@@ -1,0 +1,8 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { taxonomyUrl, uniqueValues } from '../../../lib/taxonomy';
+const entries = await getCollection('blog', ({ data }) => !data.draft);
+const categories = uniqueValues(entries, entry => entry.data.category);
+---
+<BaseLayout title="博客分类" description="按主题浏览技术文章。"><section class="container listing"><p class="eyebrow accent">博客 / 分类</p><h1>文章分类</h1><p class="listing-lead">按研究主题浏览技术文章。</p><div class="taxonomy-grid">{categories.map(category => <a class="taxonomy-card" href={taxonomyUrl('category', category)}><span class="eyebrow">CATEGORY</span><strong>{category}</strong><span>{entries.filter(entry => entry.data.category === category).length} 篇文章 →</span></a>)}</div></section></BaseLayout>

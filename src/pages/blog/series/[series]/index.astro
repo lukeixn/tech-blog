@@ -1,0 +1,14 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import BlogCard from '../../../../components/BlogCard.astro';
+import { byDate } from '../../../../lib/site';
+import { taxonomySlug, taxonomyUrl } from '../../../../lib/taxonomy';
+export async function getStaticPaths() {
+  const entries = await getCollection('blog', ({ data }) => !data.draft);
+  const series = [...new Set(entries.map(entry => entry.data.series).filter((value): value is string => Boolean(value)))];
+  return series.map(value => ({ params: { series: taxonomySlug(value) }, props: { series: value, entries: entries.filter(entry => entry.data.series === value).sort(byDate) } }));
+}
+const { series, entries } = Astro.props as { series: string; entries: CollectionEntry<'blog'>[] };
+---
+<BaseLayout title={`${series} · 博客`} description={`浏览 ${series} 系列文章。`}><section class="container listing"><a class="back-link" href={taxonomyUrl('categories')}>← 返回分类</a><p class="eyebrow accent">博客 / 系列</p><h1>{series}</h1><p class="listing-lead">{entries.length} 篇文章</p><div class="note-list">{entries.map(entry => <BlogCard entry={entry} />)}</div></section></BaseLayout>

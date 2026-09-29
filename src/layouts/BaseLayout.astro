@@ -3,6 +3,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { profile, withBase } from '../lib/site';
 import '../styles/global.css';
+import '../styles/taxonomy.css';
 import 'katex/dist/katex.min.css';
 interface Props { title?: string; description?: string; image?: string }
 const { title = profile.name, description = profile.focus, image } = Astro.props;

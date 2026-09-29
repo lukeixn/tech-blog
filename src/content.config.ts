@@ -20,6 +20,10 @@ export const collections = {
     loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
     schema: shared.extend({
       category: z.enum(['Transformer', 'VLM', 'Computer Vision', 'AI Agent', 'Deep Learning', 'Engineering']),
+      subcategory: z.string().default('General'),
+      contentType: z.enum(['Concept', 'Tutorial', 'Research Note', 'Experiment', 'Engineering Log']).default('Concept'),
+      series: z.string().optional(),
+      difficulty: z.enum(['Beginner', 'Intermediate', 'Advanced']).optional(),
       readingTime: z.number().int().positive().optional(),
     }),
   }),

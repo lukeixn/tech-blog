@@ -1,0 +1,17 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import BlogCard from '../../../../../components/BlogCard.astro';
+import { byDate } from '../../../../../lib/site';
+import { taxonomySlug, taxonomyUrl } from '../../../../../lib/taxonomy';
+export async function getStaticPaths() {
+  const entries = await getCollection('blog', ({ data }) => !data.draft);
+  const pairs = [...new Set(entries.map(entry => `${entry.data.category}|||${entry.data.subcategory}`))];
+  return pairs.map(pair => {
+    const [category, subcategory] = pair.split('|||');
+    return { params: { category: taxonomySlug(category), subcategory: taxonomySlug(subcategory) }, props: { category, subcategory, entries: entries.filter(entry => entry.data.category === category && entry.data.subcategory === subcategory).sort(byDate) } };
+  });
+}
+const { category, subcategory, entries } = Astro.props as { category: string; subcategory: string; entries: CollectionEntry<'blog'>[] };
+---
+<BaseLayout title={`${subcategory} · ${category}`} description={`浏览 ${category} / ${subcategory} 下的技术文章。`}><section class="container listing"><a class="back-link" href={taxonomyUrl('category', category)}>← 返回 {category}</a><p class="eyebrow accent">博客 / 子分类</p><h1>{subcategory}</h1><p class="listing-lead">{category} · {entries.length} 篇文章</p><div class="note-list">{entries.map(entry => <BlogCard entry={entry} />)}</div></section></BaseLayout>
